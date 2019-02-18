@@ -1,4 +1,6 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useContext } from 'react'
+import { StoreContext } from './index'
+
 import Start from '../components/Start'
 import Intro from '../components/Intro'
 import Credits from '../components/Credits'
@@ -15,6 +17,7 @@ export default function Game(props) {
   const [page, setPage] = useState('start')
   const [messageOpen, shouldDisplayMessage] = useState(false)
   const gameStrategy = new GameStrategy()
+  const storeContext = useContext(StoreContext)
 
   const changePage = page => {
     setPage(page)
@@ -24,7 +27,7 @@ export default function Game(props) {
     shouldDisplayMessage(shouldDisplay)
   }
 
-  gameStrategy.AddStrategy('start', Start)
+  gameStrategy.AddStrategy('start', Start, false)
   gameStrategy.AddStrategy('intro', Intro)
   gameStrategy.AddStrategy('credits', Credits)
   gameStrategy.AddStrategy('scenario1', Scenario1)
@@ -32,19 +35,36 @@ export default function Game(props) {
   gameStrategy.AddStrategy('scenario3', Scenario3)
   gameStrategy.AddStrategy('scenario4', Scenario4)
 
-  const renderPage = () => {
+  const renderPage = storeContext => {
     const Component = gameStrategy.returnPage(page)
     return Component ? (
-      <Component changePage={changePage} displayMessage={displayMessage} />
+      returnComponent(Component, storeContext)
     ) : (
       <div id="not-supported"> Page Not Supported </div>
     )
   }
 
+  const returnComponent = (Component, storeContext) => {
+    return Component.needsContext ? (
+      <Component.component
+        changePage={changePage}
+        displayMessage={displayMessage}
+        {...storeContext}
+      />
+    ) : (
+      <Component.component
+        changePage={changePage}
+        displayMessage={displayMessage}
+      />
+    )
+  }
+
   return (
     <Fragment>
-      {messageOpen && <Message displayMessage={displayMessage} />}
-      {renderPage()}
+      {messageOpen && (
+        <Message displayMessage={displayMessage} {...storeContext} />
+      )}
+      {renderPage(storeContext)}
     </Fragment>
   )
 }

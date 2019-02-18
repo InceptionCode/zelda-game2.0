@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Game from './root/Game.js'
+import { Root } from './root'
+
 import './sass/zelda-game.sass'
 
-ReactDOM.render(<Game />, document.getElementById('root'))
+ReactDOM.render(<Root />, document.getElementById('root'))
