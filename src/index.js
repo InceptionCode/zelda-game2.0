@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Root } from './root'
+import { StoreContextProvider } from './root'
 
 import './sass/zelda-game.sass'
 
-ReactDOM.render(<Root />, document.getElementById('root'))
+ReactDOM.render(<StoreContextProvider />, document.getElementById('root'))
