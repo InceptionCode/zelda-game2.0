@@ -4,6 +4,10 @@ This application is remake of a previous zelda game that I created here...https:
 
 **Reference the old Zelda game file for further information on the game and what inspired the idea. Technology used will be similar, difference here is that the application was created with [create-react-app](https://github.com/facebook/create-react-app), and utilizes react ~16.8 features/changes... i.e. [hooks](https://reactjs.org/docs/hooks-intro.html), and [context API](https://reactjs.org/docs/context.html).**
 
+## Development
+
+Master will have the latest stable release. All development will be on a feature branch ex: feature-xxx. Once tested the branch wil be squashed merged into master.
+
 (Additional README changes will be made later...)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
