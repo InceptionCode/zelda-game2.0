@@ -1,0 +1,52 @@
+.intro-section
+  display: flex
+  flex-direction: column
+  font-size: 18px
+  justify-content: center
+  margin: 10px auto
+  max-width: 960px
+  transform: translateX(-1500px)
+  transition: transform ease-in-out 1s
+
+  h1
+    position: relative
+    text-align: center
+
+  .hero-name
+    bottom: 40px
+
+  p
+    line-height: 2.5
+    text-align: justify
+
+  .rules
+    list-style: none
+
+    li
+      line-height: 2.5
+      margin-bottom: 15px
+
+      &::before
+        content: '-'
+        margin-right: 5px
+
+input
+  background: none
+  border: 0
+  border-bottom: 3px solid $gameover-bg
+  color: $text-color
+  font-size: 26px
+  padding: 20px
+
+  &:focus
+    animation: blinker ease-in-out 1s infinite
+    outline: none
+
+.enter-game,
+.continue-game
+  padding-bottom: 40px
+
+.intro-icon
+  height: 230px
+  margin-left: 40%
+  width: 230px

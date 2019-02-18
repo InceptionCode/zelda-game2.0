@@ -1,0 +1,24 @@
+.message-overlay
+  position: absolute
+  right: 0
+  z-index: 1000
+  width: 100%
+  height: 100%
+  background: fade-out($main-bg, .2)
+
+  &:focus
+    outline: none
+.alert-message
+  width: 960px
+  height: 400px
+  margin: 50px 16%
+  z-index: 1000
+  position: absolute
+  border: 2px solid limegreen
+  background: black
+  padding: 20px
+  border-radius: 5px
+  text-align: center
+
+  input
+    width: 90%
