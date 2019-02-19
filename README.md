@@ -6,7 +6,7 @@ This application is remake of a previous zelda game that I created here...https:
 
 ## Development
 
-Master will have the latest stable release. All development will be on a feature branch ex: feature-xxx. Once tested the branch wil be squashed merged into master. Old files will be anything ending in jsx (xxx.jsx) meaning I have not updated these files based the previous game implementation. Each feature will container small to large portion of migrating old game content to new game content.
+Master will have the latest stable release. All development will be on a feature branch ex: feature-xxx. Once tested the branch wil be squashed merged into master. Old files will be anything ending in jsx (xxx.jsx) meaning I have not updated these files based the previous game implementation. Each feature will container small to large portion of migrating old game content to new game content. Testing was not implemented in the old project but is a must in this project. The app uses [react-testing-library](https://github.com/kentcdodds/react-testing-library) due to Enzyme currently not being able to test hooks/functional components. However, I slowly prefer this testing library or framework over Enzyme. The test(s) focus on what the users sees and cares about, not if state changed or if props updated. At the end of the day, all that maters is the DOM updating and functioning as expected. The testing library allows you properly test the DOM not the component itself.
 
 ## App Structure
 
@@ -20,6 +20,7 @@ Master will have the latest stable release. All development will be on a feature
   - testHelpers/
   - utils/ All helper/utility functions to aid in small task or code manipulation.
   - index.js <- file the renders "root" (provider/app) to the DOM/
+  - **Test files are local to the components or (js) files themselves.**
 
 (Additional README changes will be made later...)
 
