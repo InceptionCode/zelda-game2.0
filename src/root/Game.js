@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useContext } from 'react'
 import { StoreContext } from './index'
 
-import Start from '../components/Start'
+import Start from '../components/StartPage/Start'
 import Intro from '../components/Intro'
 import Credits from '../components/Credits'
 import Scenario1 from '../components/Scenario1'
