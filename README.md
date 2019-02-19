@@ -6,7 +6,20 @@ This application is remake of a previous zelda game that I created here...https:
 
 ## Development
 
-Master will have the latest stable release. All development will be on a feature branch ex: feature-xxx. Once tested the branch wil be squashed merged into master.
+Master will have the latest stable release. All development will be on a feature branch ex: feature-xxx. Once tested the branch wil be squashed merged into master. Old files will be anything ending in jsx (xxx.jsx) meaning I have not updated these files based the previous game implementation. Each feature will container small to large portion of migrating old game content to new game content.
+
+## App Structure
+
+- src/ <- where the app lives
+  - components/ <- All seprated logic, local state and functionality will be in its own component.
+  - images
+  - root/ <- The root of the application including the store and provider used to pass state down to all components.
+  - sass/ <- All styling
+  - services/ <- Helper classes dedicated to one task, or component
+  - stores/ <- All reducers/ stores used to hold global state and actions involved for each state.
+  - testHelpers/
+  - utils/ All helper/utility functions to aid in small task or code manipulation.
+  - index.js <- file the renders "root" (provider/app) to the DOM/
 
 (Additional README changes will be made later...)
 
