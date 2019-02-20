@@ -2,7 +2,7 @@ import React, { Fragment, useState, useContext } from 'react'
 import { StoreContext } from './index'
 
 import Start from '../components/StartPage/Start'
-import Intro from '../components/Intro'
+import Intro from '../components/IntroPage/Intro'
 import Credits from '../components/Credits'
 import Scenario1 from '../components/Scenario1'
 import Scenario2 from '../components/Scenario2'
@@ -16,6 +16,7 @@ import GameStrategy from '../services/gameStrategy'
 export default function Game(props) {
   const [page, setPage] = useState('start')
   const [messageOpen, shouldDisplayMessage] = useState(false)
+  const [message, setMessage] = useState('')
   const gameStrategy = new GameStrategy()
   const storeContext = useContext(StoreContext)
 
@@ -23,7 +24,8 @@ export default function Game(props) {
     setPage(page)
   }
 
-  const displayMessage = shouldDisplay => {
+  const displayMessage = (shouldDisplay, message) => {
+    setMessage(message)
     shouldDisplayMessage(shouldDisplay)
   }
 
@@ -62,7 +64,11 @@ export default function Game(props) {
   return (
     <Fragment>
       {messageOpen && (
-        <Message displayMessage={displayMessage} {...storeContext} />
+        <Message
+          displayMessage={displayMessage}
+          message={message}
+          {...storeContext}
+        />
       )}
       {renderPage(storeContext)}
     </Fragment>

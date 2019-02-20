@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
   render,
   cleanup,
@@ -72,7 +72,6 @@ describe('<Start/>', () => {
         const startButton = await waitForElement(() =>
           getByText(startPage, 'Start')
         )
-
         fireEvent.click(startButton)
         expect(mockChangePage).toHaveBeenCalledWith('intro')
       }, 5000)
