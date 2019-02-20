@@ -8,7 +8,7 @@ import Scenario1 from '../components/Scenario1'
 import Scenario2 from '../components/Scenario2'
 import Scenario3 from '../components/Scenario3'
 import Scenario4 from '../components/Scenario4'
-import Message from '../components/Message'
+import Message from '../components/Message/Message'
 
 import GameStrategy from '../services/gameStrategy'
 
@@ -25,7 +25,7 @@ export default function Game(props) {
   }
 
   const displayMessage = (shouldDisplay, message) => {
-    setMessage(message)
+    if (message || message !== '') setMessage(message)
     shouldDisplayMessage(shouldDisplay)
   }
 
@@ -37,16 +37,16 @@ export default function Game(props) {
   gameStrategy.AddStrategy('scenario3', Scenario3)
   gameStrategy.AddStrategy('scenario4', Scenario4)
 
-  const renderPage = storeContext => {
+  const renderPage = () => {
     const Component = gameStrategy.returnPage(page)
     return Component ? (
-      returnComponent(Component, storeContext)
+      returnComponent(Component)
     ) : (
       <div id="not-supported"> Page Not Supported </div>
     )
   }
 
-  const returnComponent = (Component, storeContext) => {
+  const returnComponent = Component => {
     return Component.needsContext ? (
       <Component.component
         changePage={changePage}
@@ -64,13 +64,9 @@ export default function Game(props) {
   return (
     <Fragment>
       {messageOpen && (
-        <Message
-          displayMessage={displayMessage}
-          message={message}
-          {...storeContext}
-        />
+        <Message displayMessage={displayMessage} message={message} />
       )}
-      {renderPage(storeContext)}
+      {renderPage()}
     </Fragment>
   )
 }

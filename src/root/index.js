@@ -3,7 +3,7 @@ import Game from './Game.js'
 
 import EquipmentReducer from '../stores/equipmentStore'
 
-export const StoreContext = React.createContext(null)
+export const StoreContext = React.createContext()
 
 export const StoreContextProvider = () => {
   const [playState, setPlayState] = useState('not playing')
