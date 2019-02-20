@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { Fragment, useLayoutEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import zeldaIcon from '../../images/zelda-icon.jpg'
 
@@ -8,7 +8,7 @@ const Intro = props => {
   const changeDivStyle = () => {
     moveDiv({ transform: 'translateX(0)' })
   }
-  useEffect(() => {
+  useLayoutEffect(() => {
     const timer = window.setTimeout(changeDivStyle, 300)
     return () => window.clearTimeout(timer)
   })
