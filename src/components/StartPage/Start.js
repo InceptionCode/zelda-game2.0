@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 import zeldaImage from '../../images/zelda-image.png'
 
 const Start = props => {
@@ -51,6 +52,10 @@ const Start = props => {
       />
     </div>
   )
+}
+
+Start.propTypes = {
+  changePage: PropTypes.func.isRequired
 }
 
 export default Start
