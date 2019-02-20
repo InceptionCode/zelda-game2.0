@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useMemo } from 'react'
+import React, { useState, useReducer } from 'react'
 import Game from './Game.js'
 
 import EquipmentReducer from '../stores/equipmentStore'

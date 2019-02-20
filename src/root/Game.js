@@ -66,7 +66,7 @@ export default function Game(props) {
       {messageOpen && (
         <Message displayMessage={displayMessage} message={message} />
       )}
-      {renderPage(storeContext)}
+      {renderPage()}
     </Fragment>
   )
 }
