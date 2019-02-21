@@ -1,5 +1,5 @@
 import React from 'react'
-import Message from './Message/Message'
+import Message from '../Message/Message'
 
 export default function Scenario3(props) {
   const { prepareToCheckAnswer } = props,

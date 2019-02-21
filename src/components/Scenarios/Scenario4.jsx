@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Message from './Message/Message'
+import Message from '../Message/Message'
 
 export default class Scenario4 extends Component {
   componentWillMount() {
