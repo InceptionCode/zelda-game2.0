@@ -1,5 +1,3 @@
-import React from 'react'
-
 export default function EquipmentReducer(state, action) {
   switch (action.type) {
     case 'removeEquipment':

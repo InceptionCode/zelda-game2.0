@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { useGameSetup } from '../../utilities/customHooks'
 
-const Scenario1 = props => {
+const Scenario2 = props => {
   const blinker = props.playerOption !== '' ? { animation: 'none' } : {},
     enterOption =
       props.playerOption !== ''
@@ -13,33 +13,25 @@ const Scenario1 = props => {
         : { display: 'none' }
 
   const { changePlayerOption, prepareToCheckAnswer } = useGameSetup(props, [
-    'rope',
-    'hook'
+    'sword',
+    'pen'
   ])
-
   return (
-    <div data-testid="scenario-page" className="scenario-1">
-      <h1> Hello {props.userName} </h1>
+    <div data-testid="scenario-page" className="scenario-2">
       <p>
-        Link has made it inside the castle that rests barely above a huge body
-        of water.
-        <br />
-        It seems that the first room is flooded and water is rising quickly.
+        Link finds 5 huge guards in the next room.
         <br />
         What option will you choose {props.userName}?
         <br />
-        1. Tie a knot on your "rope" and use it to swing from the ceiling to the
-        other room?
+        1. Use your "sword" to cut the guards down?
         <br />
-        2. Use the "flashlight" in order to search for an extra object or path
-        you can exploit?
+        2. Use the "flashlight" in order to blind the guards?
         <br />
-        3. Throw a "pen" at the ceiling?
+        3. Throw a "pen" for a distraction?
         <br />
-        4. Use the "sword" to find another weak spot in the wall that you can
-        break?
+        4. Use the "rope" to grab one guard at a time?
         <br />
-        5. Throw your "hook" at the ceiling and use it swing to the other room?
+        5. Throw "hook" at guards?
       </p>
       <input
         onChange={e => changePlayerOption(e.target.value)}
@@ -47,7 +39,7 @@ const Scenario1 = props => {
         placeholder="Make your choose here..."
         value={props.playerOption}
         style={blinker}
-        onKeyDown={e => prepareToCheckAnswer(e, 'scenario2')}
+        onKeyDown={e => prepareToCheckAnswer(e, 'scenario3')}
       />
       <br />
       <h2 className="continue-game" style={enterOption}>
@@ -57,7 +49,7 @@ const Scenario1 = props => {
   )
 }
 
-Scenario1.propTypes = {
+Scenario2.propTypes = {
   dispatch: PropTypes.func.isRequired,
   playerOption: PropTypes.string.isRequired,
   userName: PropTypes.string.isRequired,
@@ -70,4 +62,4 @@ Scenario1.propTypes = {
   equipment: PropTypes.array.isRequired
 }
 
-export default Scenario1
+export default Scenario2

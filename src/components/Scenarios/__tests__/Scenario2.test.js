@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, cleanup, fireEvent } from 'react-testing-library'
 
-import Scenario from '../Scenario1'
+import Scenario from '../Scenario2'
 
 // automatically unmount and cleanup DOM after the test is finished.
 afterEach(cleanup)
@@ -58,8 +58,8 @@ describe('<Scenario/>', () => {
 
   it('should show userName in scenario.', () => {
     const scenario = getByTestId('scenario-page')
-    expect(scenario.querySelector('h1').innerHTML.split(' ')).toContain(
-      userName
+    expect(scenario.querySelector('p').innerHTML.split('<br>')).toContain(
+      `What option will you choose ${userName}?`
     )
   })
 
@@ -118,7 +118,7 @@ describe('<Scenario/>', () => {
 
     it('should display a message if answer is wrong, reduce health and remove equipment.', () => {
       // reduce the health first after verifying wrong answer
-      playerOption = 'sword'
+      playerOption = 'rope'
       inputChange(playerOption)
       triggerRerender(playerOption)
       submitOption()
@@ -149,7 +149,7 @@ describe('<Scenario/>', () => {
     })
 
     it('should remove item, clear playerOption and navigate to next scenario if option is right.', () => {
-      playerOption = 'rope'
+      playerOption = 'sword'
       inputChange(playerOption)
       triggerRerender(playerOption)
       submitOption()
@@ -158,7 +158,7 @@ describe('<Scenario/>', () => {
         payload: playerOption
       })
       expect(mockSetPlayerOption).toHaveBeenCalledWith('')
-      expect(mockChangePage).toHaveBeenCalledWith('scenario2')
+      expect(mockChangePage).toHaveBeenCalledWith('scenario3')
     })
   })
 
