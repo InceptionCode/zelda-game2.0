@@ -10,7 +10,7 @@ const Message = props => {
   })
 
   const closeMessage = e => {
-    if ((e.key = 'Enter')) {
+    if (e.key === 'Enter') {
       props.displayMessage(false)
     }
   }

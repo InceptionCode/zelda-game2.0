@@ -43,5 +43,13 @@ describe('<Message/>', () => {
       fireEvent.keyDown(input, { key: 'Enter' })
       expect(mockDisplayMessage).toHaveBeenCalledWith(false)
     })
+
+    it('should not close the message if key is not "enter"', () => {
+      const messageComp = getByTestId('message-component')
+      const input = getByPlaceholderText('Press Enter to Close Message')
+      expect(messageComp).toBeTruthy()
+      fireEvent.keyDown(input, { key: 'Backspace' })
+      expect(mockDisplayMessage).not.toHaveBeenCalledWith(false)
+    })
   })
 })

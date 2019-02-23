@@ -1,20 +1,24 @@
 import React from 'react'
-import Message from './Message/Message'
+import PropTypes from 'prop-types'
+import { useGameSetup } from '../../utilities/customHooks'
 
-export default function Scenario1(props) {
-  const { prepareToCheckAnswer } = props,
-    blinker = props.option !== '' ? { animation: 'none' } : {},
+const Scenario1 = props => {
+  const blinker = props.playerOption !== '' ? { animation: 'none' } : {},
     enterOption =
-      props.option !== ''
+      props.playerOption !== ''
         ? {
             display: 'initial',
             animation: 'blinker ease-in-out 1s infinite'
           }
         : { display: 'none' }
 
+  const { changePlayerOption, prepareToCheckAnswer } = useGameSetup(props, [
+    'rope',
+    'hook'
+  ])
+
   return (
-    <div className="scenario-1">
-      <Message message={props.message} clearMessage={props.clearMessage} />
+    <div data-testid="scenario-page" className="scenario-1">
       <h1> Hello {props.userName} </h1>
       <p>
         Link has made it inside the castle that rests barely above a huge body
@@ -38,18 +42,32 @@ export default function Scenario1(props) {
         5. Throw your "hook" at the ceiling and use it swing to the other room?
       </p>
       <input
-        onChange={props.changeOption}
+        onChange={e => changePlayerOption(e.target.value)}
         type="text"
         placeholder="Make your choose here..."
-        value={props.option}
+        value={props.playerOption}
         style={blinker}
-        onKeyPress={e => prepareToCheckAnswer(e, props.option, 'hook', 'rope')}
+        onKeyDown={e => prepareToCheckAnswer(e, 'scenario2')}
       />
       <br />
       <h2 className="continue-game" style={enterOption}>
-        {' '}
         Press Enter to move on...
       </h2>
     </div>
   )
 }
+
+Scenario1.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  playerOption: PropTypes.string.isRequired,
+  userName: PropTypes.string.isRequired,
+  setUserName: PropTypes.func.isRequired,
+  changePage: PropTypes.func.isRequired,
+  displayMessage: PropTypes.func.isRequired,
+  setPlayerOption: PropTypes.func.isRequired,
+  playerHealth: PropTypes.number.isRequired,
+  setPlayerHealth: PropTypes.func.isRequired,
+  equipment: PropTypes.array.isRequired
+}
+
+export default Scenario1

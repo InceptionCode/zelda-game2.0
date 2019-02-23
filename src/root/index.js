@@ -10,7 +10,7 @@ export const StoreContextProvider = () => {
   const [playerOption, setPlayerOption] = useState('')
   const [userName, setUserName] = useState('')
   const [playerHealth, setPlayerHealth] = useState(100)
-  const [state, dispatch] = useReducer(EquipmentReducer, [
+  const [equipment, dispatch] = useReducer(EquipmentReducer, [
     'sword',
     'rope',
     'flashlight',
@@ -28,7 +28,7 @@ export const StoreContextProvider = () => {
     playerHealth,
     setPlayerHealth,
     dispatch,
-    state
+    equipment
   }
 
   return (
