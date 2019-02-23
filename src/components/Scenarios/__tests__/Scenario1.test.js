@@ -1,5 +1,6 @@
 import React from 'react'
 import { render, cleanup, fireEvent } from 'react-testing-library'
+import { REMOVE_EQUIPMENT, RESET } from '../../../stores/equipmentStore'
 
 import Scenario from '../Scenario1'
 
@@ -98,7 +99,11 @@ describe('<Scenario/>', () => {
       submitOption = function() {
         fireEvent.keyDown(input, { key: 'Enter' })
       }
-      triggerRerender = function(playerOption, playerHealth = 100) {
+      triggerRerender = function(
+        playerOption,
+        playerHealth = 100,
+        equipment = ['rope', 'sword']
+      ) {
         rerender(
           <Scenario
             changePage={mockChangePage}
@@ -116,6 +121,14 @@ describe('<Scenario/>', () => {
       }
     })
 
+    it('should display message if answer has not be given', () => {
+      submitOption()
+      expect(mockDisplayMessage).toHaveBeenCalledWith(
+        true,
+        'Please choose an option'
+      )
+    })
+
     it('should display a message if answer is wrong, reduce health and remove equipment.', () => {
       // reduce the health first after verifying wrong answer
       playerOption = 'sword'
@@ -126,13 +139,59 @@ describe('<Scenario/>', () => {
       expect(mockSetPlayerHealth).toHaveBeenCalledWith(playerHealth)
       // remove equipment after verifying wrong answer
       expect(mockDispatch).toHaveBeenCalledWith({
-        type: 'removeEquipment',
+        type: REMOVE_EQUIPMENT,
         payload: playerOption
       })
       // display message that shows their current health%
       expect(mockDisplayMessage).toHaveBeenCalledWith(
         true,
         `Wrong move! You now have ${playerHealth}% health!`
+      )
+    })
+
+    it('should end game if no health after choosing wrong answer', () => {
+      playerOption = 'sword'
+      inputChange(playerOption)
+      triggerRerender(playerOption, 25)
+      submitOption()
+      playerHealth = playerHealth - 100 // no health
+      expect(mockSetPlayerHealth).toHaveBeenCalledWith(playerHealth)
+      // remove equipment after verifying wrong answer
+      expect(mockDispatch).toHaveBeenCalledWith({
+        type: REMOVE_EQUIPMENT,
+        payload: playerOption
+      })
+
+      assertGameOver(
+        'no health',
+        mockDispatch,
+        mockSetPlayerHealth,
+        mockSetPlayerOption,
+        mockSetUserName,
+        mockChangePage
+      )
+    })
+
+    it('should end game if no equipment after choosing wrong answer', () => {
+      playerOption = 'sword'
+      inputChange(playerOption)
+      triggerRerender(playerOption, 100, ['sword'])
+      submitOption()
+      playerHealth = playerHealth - 25
+      expect(mockSetPlayerHealth).toHaveBeenCalledWith(playerHealth)
+      // remove equipment after verifying wrong answer
+      expect(mockDispatch).toHaveBeenCalledWith({
+        type: REMOVE_EQUIPMENT,
+        payload: playerOption
+      })
+
+      assertGameOver(
+        'no equipment',
+        mockDispatch,
+        mockSetPlayerHealth,
+        mockSetPlayerOption,
+        mockSetUserName,
+        mockChangePage
       )
     })
 
@@ -154,7 +213,7 @@ describe('<Scenario/>', () => {
       triggerRerender(playerOption)
       submitOption()
       expect(mockDispatch).toHaveBeenCalledWith({
-        type: 'removeEquipment',
+        type: REMOVE_EQUIPMENT,
         payload: playerOption
       })
       expect(mockSetPlayerOption).toHaveBeenCalledWith('')
@@ -233,7 +292,7 @@ function assertGameOver(
   mockChangePage
 ) {
   expect(global.alert).toHaveBeenCalledWith(`Game Over!!! ${reason}`)
-  expect(mockDispatch).toHaveBeenCalledWith({ type: 'reset' })
+  expect(mockDispatch).toHaveBeenCalledWith({ type: RESET })
   expect(mockSetPlayerHealth).toHaveBeenCalledWith(100)
   expect(mockSetPlayerOption).toHaveBeenCalledWith('')
   expect(mockSetUserName).toHaveBeenCalledWith('')

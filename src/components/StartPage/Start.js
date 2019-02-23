@@ -15,8 +15,9 @@ const Start = props => {
     return () => clearTimeout(timer)
   }, [introVidTime])
 
+  // Do not like this need a better way to test instead of using a prop.
   const displayOptionsMenu =
-    introVidTime === 10 ? (
+    introVidTime === 10 || props.test ? (
       <div className="start-menu">
         <button
           className="start-button"
@@ -55,7 +56,12 @@ const Start = props => {
 }
 
 Start.propTypes = {
-  changePage: PropTypes.func.isRequired
+  changePage: PropTypes.func.isRequired,
+  test: PropTypes.bool
+}
+
+Start.defaultProps = {
+  test: false
 }
 
 export default Start

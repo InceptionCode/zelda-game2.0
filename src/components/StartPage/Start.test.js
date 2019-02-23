@@ -1,10 +1,5 @@
 import React from 'react'
-import {
-  render,
-  cleanup,
-  fireEvent,
-  waitForElement
-} from 'react-testing-library'
+import { render, cleanup, fireEvent } from 'react-testing-library'
 
 import Start from './Start'
 
@@ -16,9 +11,7 @@ describe('<Start/>', () => {
   beforeEach(() => {
     mockChangePage = jest.fn()
     mockDisplayMessage = jest.fn()
-    getByTestId = render(
-      <Start changePage={mockChangePage} displayMessage={mockDisplayMessage} />
-    ).getByTestId
+    getByTestId = render(<Start changePage={mockChangePage} />).getByTestId
   })
 
   it('should render with no problem.', () => {
@@ -31,62 +24,38 @@ describe('<Start/>', () => {
     )
   })
 
-  jest.useFakeTimers()
-  jest.advanceTimersByTime(5000)
   // Cannot figure out how to test after 10 seconds
   it('should render two buttons, one starts the game the other roll credits when state.introVidTime === 10.', async () => {
-    const { getByTestId, getByText } = render(
-      <Start changePage={mockChangePage} displayMessage={mockDisplayMessage} />
+    const { getByText } = render(
+      <Start changePage={mockChangePage} test={true} />
     )
-
-    setTimeout(async () => {
-      const startPage = getByTestId('start-page')
-      const startButton = await waitForElement(() =>
-        getByText(startPage, 'Start')
-      )
-      const creditsButton = await waitForElement(() =>
-        getByText(startPage, 'Roll Credits')
-      )
-
-      expect(startButton).toBeTruthy()
-      expect(creditsButton).toBeTruthy()
-    }, 5000)
+    let startButton, creditsButton
+    startButton = getByText('Start')
+    creditsButton = getByText('Roll Credits')
+    expect(startButton).toBeTruthy()
+    expect(creditsButton).toBeTruthy()
   })
 
   describe('Button functionality', () => {
-    let getByTestId, getByText
+    let getByText
     beforeEach(() => {
       const component = render(
-        <Start
-          changePage={mockChangePage}
-          displayMessage={mockDisplayMessage}
-        />
+        <Start changePage={mockChangePage} test={true} />
       )
       getByTestId = component.getByTestId
       getByText = component.getByText
     })
 
     it('should start game by calling changePage("intro")', () => {
-      setTimeout(async () => {
-        const startPage = getByTestId('start-page')
-        const startButton = await waitForElement(() =>
-          getByText(startPage, 'Start')
-        )
-        fireEvent.click(startButton)
-        expect(mockChangePage).toHaveBeenCalledWith('intro')
-      }, 5000)
+      let startButton = getByText('Start')
+      fireEvent.click(startButton)
+      expect(mockChangePage).toHaveBeenCalledWith('intro')
     })
 
     it('should show credits for game by calling changePage("credits")', () => {
-      setTimeout(async () => {
-        const startPage = getByTestId('start-page')
-        const creditsButton = await waitForElement(() =>
-          getByText(startPage, 'Start')
-        )
-
-        fireEvent.click(creditsButton)
-        expect(mockChangePage).toHaveBeenCalledWith('credits')
-      }, 5000)
+      let startButton = getByText('Roll Credits')
+      fireEvent.click(startButton)
+      expect(mockChangePage).toHaveBeenCalledWith('credits')
     })
   })
 })

@@ -22,6 +22,8 @@ export default class OptionValidationService {
     const [hasEquipment, equipmentReason] = this.CheckPlayerEquipment()
     if (!hasEquipment) return [false, equipmentReason]
 
+    if (answer === '') return [false, '']
+
     const isOption = this.equipment.indexOf(answer)
     if (isOption === -1) return [false, 'not an option']
 

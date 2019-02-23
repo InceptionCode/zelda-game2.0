@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import OptionValidationService from '../services/optionValidationService'
+import { REMOVE_EQUIPMENT, RESET } from '../stores/equipmentStore'
 
 export const useGameSetup = function(props, correctAnswers) {
   let optionValidationService
@@ -20,7 +21,7 @@ export const useGameSetup = function(props, correctAnswers) {
     )
     props.setPlayerHealth(health)
     props.dispatch({
-      type: 'removeEquipment',
+      type: REMOVE_EQUIPMENT,
       payload: props.playerOption
     })
     props.displayMessage(true, `Wrong move! You now have ${health}% health!`)
@@ -37,7 +38,7 @@ export const useGameSetup = function(props, correctAnswers) {
 
   const handleEndGame = function(reason) {
     alert(`Game Over!!! ${reason}`)
-    props.dispatch({ type: 'reset' })
+    props.dispatch({ type: RESET })
     props.setPlayerHealth(100)
     props.setPlayerOption('')
     props.setUserName('')
@@ -46,7 +47,7 @@ export const useGameSetup = function(props, correctAnswers) {
 
   const handleRightAnswer = function(nextPage) {
     props.dispatch({
-      type: 'removeEquipment',
+      type: REMOVE_EQUIPMENT,
       payload: props.playerOption
     })
     changePlayerOption('')
@@ -66,6 +67,7 @@ export const useGameSetup = function(props, correctAnswers) {
         handleEndGame(reason)
         break
       default:
+        props.displayMessage(true, 'Please choose an option')
         break
     }
   }
