@@ -34,9 +34,15 @@ export const useGameSetup = function(props, correctAnswers) {
       type: REMOVE_EQUIPMENT,
       payload: props.playerOption
     })
+    if (health === 0) {
+      handleEndGame('no health')
+      return
+    }
+    if (equipment.length === 0) {
+      handleEndGame('no equipment')
+      return
+    }
     props.displayMessage(true, `Wrong move! You now have ${health}% health!`)
-    if (health === 0) handleEndGame('no health')
-    if (equipment.length === 0) handleEndGame('no equipment')
   }
 
   const handleInvalidOption = function() {
