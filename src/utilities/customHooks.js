@@ -1,9 +1,19 @@
 import { useEffect } from 'react'
 import OptionValidationService from '../services/optionValidationService'
-import { REMOVE_EQUIPMENT, RESET } from '../stores/equipmentStore'
+import {
+  ADD_EQUIPMENT,
+  REMOVE_EQUIPMENT,
+  RESET
+} from '../stores/equipmentStore'
 
 export const useGameSetup = function(props, correctAnswers) {
   let optionValidationService
+  useEffect(() => {
+    if (correctAnswers.indexOf('run') !== -1) {
+      props.dispatch({ type: ADD_EQUIPMENT, payload: 'run' })
+    }
+  }, [])
+
   useEffect(() => {
     const { playerHealth, equipment } = props
     const state = { playerHealth, equipment }

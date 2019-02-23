@@ -95,7 +95,7 @@ describe('<Scenario/>', () => {
       inputChange = function(value) {
         fireEvent.change(input, { target: { value } })
       }
-      submitOption = function() {
+      submitOption = function(key) {
         fireEvent.keyDown(input, { key: 'Enter' })
       }
       triggerRerender = function(
@@ -121,7 +121,7 @@ describe('<Scenario/>', () => {
     })
 
     it('should display message if answer has not be given', () => {
-      submitOption()
+      submitOption('Enter')
       expect(mockDisplayMessage).toHaveBeenCalledWith(
         true,
         'Please choose an option'
@@ -133,7 +133,7 @@ describe('<Scenario/>', () => {
       playerOption = 'rope'
       inputChange(playerOption)
       triggerRerender(playerOption)
-      submitOption()
+      submitOption('Enter')
       playerHealth = playerHealth - 25
       expect(mockSetPlayerHealth).toHaveBeenCalledWith(playerHealth)
       // remove equipment after verifying wrong answer
@@ -152,7 +152,7 @@ describe('<Scenario/>', () => {
       playerOption = 'rope'
       inputChange(playerOption)
       triggerRerender(playerOption, 25)
-      submitOption()
+      submitOption('Enter')
       playerHealth = playerHealth - 100 // no health
       expect(mockSetPlayerHealth).toHaveBeenCalledWith(playerHealth)
       // remove equipment after verifying wrong answer
@@ -175,7 +175,7 @@ describe('<Scenario/>', () => {
       playerOption = 'rope'
       inputChange(playerOption)
       triggerRerender(playerOption, 100, ['rope'])
-      submitOption()
+      submitOption('Enter')
       playerHealth = playerHealth - 25
       expect(mockSetPlayerHealth).toHaveBeenCalledWith(playerHealth)
       // remove equipment after verifying wrong answer
@@ -199,7 +199,7 @@ describe('<Scenario/>', () => {
       playerOption = 'hamburger'
       inputChange(playerOption)
       triggerRerender(playerOption)
-      submitOption()
+      submitOption('Enter')
       expect(mockDisplayMessage).toHaveBeenCalledWith(
         true,
         "You don't have that item. Try again... make sure you type out the item."
@@ -210,7 +210,7 @@ describe('<Scenario/>', () => {
       playerOption = 'sword'
       inputChange(playerOption)
       triggerRerender(playerOption)
-      submitOption()
+      submitOption('Enter')
       expect(mockDispatch).toHaveBeenCalledWith({
         type: REMOVE_EQUIPMENT,
         payload: playerOption
@@ -227,7 +227,7 @@ describe('<Scenario/>', () => {
       inputChange = function(value) {
         fireEvent.change(input, { target: { value } })
       }
-      submitOption = function() {
+      submitOption = function(key) {
         fireEvent.keyDown(input, { key: 'Enter' })
       }
       triggerRerender = function(equipment, playerHealth = 100, playerOption) {
@@ -253,7 +253,7 @@ describe('<Scenario/>', () => {
       const reason = 'no health'
       inputChange(playerOption)
       triggerRerender(equipment, playerHealth, playerOption)
-      submitOption()
+      submitOption('Enter')
       assertGameOver(
         reason,
         mockDispatch,
@@ -269,7 +269,7 @@ describe('<Scenario/>', () => {
       const reason = 'no equipment'
       inputChange(playerOption)
       triggerRerender(equipment, playerHealth, playerOption)
-      submitOption()
+      submitOption('Enter')
       assertGameOver(
         reason,
         mockDispatch,

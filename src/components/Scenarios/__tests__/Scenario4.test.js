@@ -1,8 +1,11 @@
 import React from 'react'
 import { render, cleanup, fireEvent } from 'react-testing-library'
-import { REMOVE_EQUIPMENT, RESET } from '../../../stores/equipmentStore'
-
-import Scenario from '../Scenario1'
+import {
+  REMOVE_EQUIPMENT,
+  RESET,
+  ADD_EQUIPMENT
+} from '../../../stores/equipmentStore'
+import Scenario from '../Scenario4'
 
 // automatically unmount and cleanup DOM after the test is finished.
 afterEach(cleanup)
@@ -32,7 +35,7 @@ describe('<Scenario/>', () => {
     mockDispatch = jest.fn()
     userName = 'Darrell'
     playerHealth = 100
-    equipment = ['rope', 'sword']
+    equipment = ['run', 'sword']
     playerOption = ''
     component = render(
       <Scenario
@@ -57,10 +60,15 @@ describe('<Scenario/>', () => {
     expect(getByTestId('scenario-page')).toBeTruthy()
   })
 
+  it('should have added "run" to equipment.', () => {
+    const expectedAction = { type: ADD_EQUIPMENT, payload: 'run' }
+    expect(mockDispatch).toHaveBeenCalledWith(expectedAction)
+  })
+
   it('should show userName in scenario.', () => {
     const scenario = getByTestId('scenario-page')
-    expect(scenario.querySelector('h1').innerHTML.split(' ')).toContain(
-      userName
+    expect(scenario.querySelector('p').innerHTML.split('<br>')).toContain(
+      `What option will you choose ${userName}?`
     )
   })
 
@@ -97,12 +105,12 @@ describe('<Scenario/>', () => {
         fireEvent.change(input, { target: { value } })
       }
       submitOption = function(key) {
-        fireEvent.keyDown(input, { key: 'Enter' })
+        fireEvent.keyDown(input, { key })
       }
       triggerRerender = function(
         playerOption,
         playerHealth = 100,
-        equipment = ['rope', 'sword']
+        equipment = ['run', 'sword']
       ) {
         rerender(
           <Scenario
@@ -119,6 +127,14 @@ describe('<Scenario/>', () => {
           />
         )
       }
+    })
+
+    it('should not sumbitOption if any other key is used', () => {
+      submitOption('Backspace')
+      expect(mockDisplayMessage).not.toHaveBeenCalledWith(
+        true,
+        'Please choose an option'
+      )
     })
 
     it('should display message if answer has not be given', () => {
@@ -208,7 +224,7 @@ describe('<Scenario/>', () => {
     })
 
     it('should remove item, clear playerOption and navigate to next scenario if option is right.', () => {
-      playerOption = 'rope'
+      playerOption = 'run'
       inputChange(playerOption)
       triggerRerender(playerOption)
       submitOption('Enter')
@@ -217,7 +233,7 @@ describe('<Scenario/>', () => {
         payload: playerOption
       })
       expect(mockSetPlayerOption).toHaveBeenCalledWith('')
-      expect(mockChangePage).toHaveBeenCalledWith('scenario2')
+      expect(mockChangePage).toHaveBeenCalledWith('credits')
     })
   })
 

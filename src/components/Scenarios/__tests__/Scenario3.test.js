@@ -1,8 +1,7 @@
 import React from 'react'
 import { render, cleanup, fireEvent } from 'react-testing-library'
 import { REMOVE_EQUIPMENT, RESET } from '../../../stores/equipmentStore'
-
-import Scenario from '../Scenario1'
+import Scenario from '../Scenario3'
 
 // automatically unmount and cleanup DOM after the test is finished.
 afterEach(cleanup)
@@ -32,7 +31,7 @@ describe('<Scenario/>', () => {
     mockDispatch = jest.fn()
     userName = 'Darrell'
     playerHealth = 100
-    equipment = ['rope', 'sword']
+    equipment = ['hook', 'sword']
     playerOption = ''
     component = render(
       <Scenario
@@ -59,8 +58,8 @@ describe('<Scenario/>', () => {
 
   it('should show userName in scenario.', () => {
     const scenario = getByTestId('scenario-page')
-    expect(scenario.querySelector('h1').innerHTML.split(' ')).toContain(
-      userName
+    expect(scenario.querySelector('p').innerHTML.split('<br>')).toContain(
+      `What option will you choose ${userName}?`
     )
   })
 
@@ -102,7 +101,7 @@ describe('<Scenario/>', () => {
       triggerRerender = function(
         playerOption,
         playerHealth = 100,
-        equipment = ['rope', 'sword']
+        equipment = ['hook', 'sword']
       ) {
         rerender(
           <Scenario
@@ -208,7 +207,7 @@ describe('<Scenario/>', () => {
     })
 
     it('should remove item, clear playerOption and navigate to next scenario if option is right.', () => {
-      playerOption = 'rope'
+      playerOption = 'hook'
       inputChange(playerOption)
       triggerRerender(playerOption)
       submitOption('Enter')
@@ -217,7 +216,7 @@ describe('<Scenario/>', () => {
         payload: playerOption
       })
       expect(mockSetPlayerOption).toHaveBeenCalledWith('')
-      expect(mockChangePage).toHaveBeenCalledWith('scenario2')
+      expect(mockChangePage).toHaveBeenCalledWith('scenario4')
     })
   })
 
