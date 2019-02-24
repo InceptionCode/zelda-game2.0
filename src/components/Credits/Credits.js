@@ -3,7 +3,10 @@ import PropTypes from 'prop-types'
 
 const Credits = props => {
   useEffect(() => {
-    if (props.playState === 'playing') alert('You Won!!')
+    const { playState, playerHealth, equipment } = props
+    if (playState === 'playing' && playerHealth !== 0 && equipment.length > 0) {
+      alert('You Won!!')
+    }
   })
 
   return (
@@ -38,7 +41,9 @@ const Credits = props => {
 }
 
 Credits.propTypes = {
-  playState: PropTypes.string.isRequired
+  playState: PropTypes.string.isRequired,
+  equipment: PropTypes.array.isRequired,
+  playerHealth: PropTypes.number.isRequired
 }
 
 export default Credits
