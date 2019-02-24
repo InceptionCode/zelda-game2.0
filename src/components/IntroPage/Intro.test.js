@@ -1,10 +1,9 @@
 import React from 'react'
-import { render, cleanup, fireEvent } from 'react-testing-library'
+import { render, fireEvent } from 'react-testing-library'
 
 import Intro from './Intro'
 
 // automatically unmount and cleanup DOM after the test is finished.
-afterEach(cleanup)
 
 describe('<Intro/>', () => {
   let component,
@@ -23,6 +22,7 @@ describe('<Intro/>', () => {
         changePage={mockChangePage}
         displayMessage={mockDisplayMessage}
         setUserName={mockSetUserName}
+        setPlayState={() => {}}
       />
     )
     getByPlaceholderText = component.getByPlaceholderText
@@ -50,6 +50,7 @@ describe('<Intro/>', () => {
           changePage={mockChangePage}
           displayMessage={mockDisplayMessage}
           setUserName={mockSetUserName}
+          setPlayState={() => {}}
           userName=""
         />
       )

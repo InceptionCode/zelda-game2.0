@@ -1,10 +1,9 @@
 import React from 'react'
-import { render, cleanup, fireEvent } from 'react-testing-library'
+import { render, fireEvent } from 'react-testing-library'
 
 import Start from './Start'
 
 // automatically unmount and cleanup DOM after the test is finished.
-afterEach(cleanup)
 
 describe('<Start/>', () => {
   let mockChangePage, mockDisplayMessage, getByTestId

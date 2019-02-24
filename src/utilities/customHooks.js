@@ -1,10 +1,6 @@
 import { useEffect } from 'react'
 import OptionValidationService from '../services/optionValidationService'
-import {
-  ADD_EQUIPMENT,
-  REMOVE_EQUIPMENT,
-  RESET
-} from '../stores/equipmentStore'
+import { ADD_EQUIPMENT, REMOVE_EQUIPMENT } from '../stores/equipmentStore'
 
 export const useGameSetup = function(props, correctAnswers) {
   let optionValidationService
@@ -54,10 +50,6 @@ export const useGameSetup = function(props, correctAnswers) {
 
   const handleEndGame = function(reason) {
     alert(`Game Over!!! ${reason}`)
-    props.dispatch({ type: RESET })
-    props.setPlayerHealth(100)
-    props.setPlayerOption('')
-    props.setUserName('')
     props.changePage('credits')
   }
 

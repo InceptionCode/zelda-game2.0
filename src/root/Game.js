@@ -3,7 +3,7 @@ import { StoreContext } from './index'
 
 import Start from '../components/StartPage/Start'
 import Intro from '../components/IntroPage/Intro'
-import Credits from '../components/Credits'
+import Credits from '../components/Credits/Credits'
 import Scenario1 from '../components/Scenarios/Scenario1'
 import Scenario2 from '../components/Scenarios/Scenario2'
 import Scenario3 from '../components/Scenarios/Scenario3'

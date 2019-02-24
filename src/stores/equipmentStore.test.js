@@ -1,9 +1,5 @@
 import EquipmentReducer from './equipmentStore'
-import {
-  ADD_EQUIPMENT,
-  REMOVE_EQUIPMENT,
-  RESET
-} from '../stores/equipmentStore'
+import { ADD_EQUIPMENT, REMOVE_EQUIPMENT } from '../stores/equipmentStore'
 describe('EquipmentReducer', () => {
   let state, action
   beforeEach(() => {
@@ -31,19 +27,6 @@ describe('EquipmentReducer', () => {
       const expectedState = state.filter(item => item !== 'sword')
       action = { type: REMOVE_EQUIPMENT, payload: 'sword' }
       expect(EquipmentReducer(state, action)).toEqual(expectedState)
-    })
-  })
-
-  describe('when action type is "reset" in switch case', () => {
-    it('should return initial state', () => {
-      action = { type: RESET }
-      expect(EquipmentReducer(state, action)).toEqual([
-        'sword',
-        'rope',
-        'flashlight',
-        'pen',
-        'hook'
-      ])
     })
   })
 })

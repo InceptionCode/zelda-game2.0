@@ -1,4 +1,4 @@
-import React, { Fragment, useLayoutEffect, useState } from 'react'
+import React, { Fragment, useEffect, useLayoutEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import zeldaIcon from '../../images/zelda-icon.jpg'
 
@@ -8,6 +8,11 @@ const Intro = props => {
   const changeDivStyle = () => {
     moveDiv({ transform: 'translateX(0)' })
   }
+
+  useEffect(() => {
+    props.setPlayState('playing')
+  })
+
   useLayoutEffect(() => {
     const timer = window.setTimeout(changeDivStyle, 300)
     return () => window.clearTimeout(timer)
@@ -93,7 +98,7 @@ const Intro = props => {
             <br />
             2. Take Sword.
             <br />
-            Here you would enter "Knife" or "Sword" or the associated number.
+            Here you would enter "Knife" or "Sword".
           </li>
           <li>
             You are given 5 items to start off with as your equipment.
@@ -137,6 +142,7 @@ const Intro = props => {
 Intro.propTypes = {
   changePage: PropTypes.func.isRequired,
   setUserName: PropTypes.func.isRequired,
+  setPlayState: PropTypes.func.isRequired,
   displayMessage: PropTypes.func.isRequired,
   userName: PropTypes.string
 }

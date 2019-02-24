@@ -1,12 +1,10 @@
 import React from 'react'
-import { render, cleanup, fireEvent } from 'react-testing-library'
-import { REMOVE_EQUIPMENT, RESET } from '../../../stores/equipmentStore'
+import { render, fireEvent } from 'react-testing-library'
+import { REMOVE_EQUIPMENT } from '../../../stores/equipmentStore'
 
 import Scenario from '../Scenario1'
 
 // automatically unmount and cleanup DOM after the test is finished.
-afterEach(cleanup)
-global.alert = jest.fn()
 
 describe('<Scenario/>', () => {
   let component,
@@ -22,6 +20,7 @@ describe('<Scenario/>', () => {
     userName,
     getByTestId,
     getByPlaceholderText,
+    getByText,
     rerender
   beforeEach(() => {
     mockChangePage = jest.fn()
@@ -50,6 +49,7 @@ describe('<Scenario/>', () => {
     )
     getByTestId = component.getByTestId
     getByPlaceholderText = component.getByPlaceholderText
+    getByText = component.getByText
     rerender = component.rerender
   })
 
@@ -58,15 +58,13 @@ describe('<Scenario/>', () => {
   })
 
   it('should show userName in scenario.', () => {
-    const scenario = getByTestId('scenario-page')
-    expect(scenario.querySelector('h1').innerHTML.split(' ')).toContain(
-      userName
-    )
+    expect(getByText(`Hello ${userName}`)).toBeTruthy()
   })
 
   describe('User input/option', () => {
     it('should call setPlayerOption onChange.', () => {
-      const input = getByPlaceholderText('Make your choose here...')
+      const input = getByPlaceholderText(/Make your choose here.../i)
+      expect(input).toHaveAttribute('type', 'text')
       expect(input.value).toEqual(playerOption)
       playerOption = 'rope'
       fireEvent.change(input, { target: { value: playerOption } })
@@ -92,7 +90,7 @@ describe('<Scenario/>', () => {
   describe('When user submits their option', () => {
     let input, inputChange, submitOption, triggerRerender
     beforeEach(() => {
-      input = getByPlaceholderText('Make your choose here...')
+      input = getByPlaceholderText(/Make your choose here.../i)
       inputChange = function(value) {
         fireEvent.change(input, { target: { value } })
       }
@@ -162,14 +160,7 @@ describe('<Scenario/>', () => {
         payload: playerOption
       })
 
-      assertGameOver(
-        'no health',
-        mockDispatch,
-        mockSetPlayerHealth,
-        mockSetPlayerOption,
-        mockSetUserName,
-        mockChangePage
-      )
+      assertGameOver('no health', mockChangePage)
     })
 
     it('should end game if no equipment after choosing wrong answer', () => {
@@ -185,14 +176,7 @@ describe('<Scenario/>', () => {
         payload: playerOption
       })
 
-      assertGameOver(
-        'no equipment',
-        mockDispatch,
-        mockSetPlayerHealth,
-        mockSetPlayerOption,
-        mockSetUserName,
-        mockChangePage
-      )
+      assertGameOver('no health', mockChangePage)
     })
 
     it('should display a message if user chooses an item that is not available', () => {
@@ -224,7 +208,7 @@ describe('<Scenario/>', () => {
   describe('when user has no health or equipment', () => {
     let input, inputChange, submitOption, triggerRerender
     beforeEach(() => {
-      input = getByPlaceholderText('Make your choose here...')
+      input = getByPlaceholderText(/Make your choose here.../i)
       inputChange = function(value) {
         fireEvent.change(input, { target: { value } })
       }
@@ -255,14 +239,7 @@ describe('<Scenario/>', () => {
       inputChange(playerOption)
       triggerRerender(equipment, playerHealth, playerOption)
       submitOption('Enter')
-      assertGameOver(
-        reason,
-        mockDispatch,
-        mockSetPlayerHealth,
-        mockSetPlayerOption,
-        mockSetUserName,
-        mockChangePage
-      )
+      assertGameOver(reason, mockChangePage)
     })
     it('should alert(Game Over!!! [reason]-equipment) rest state, then navigate back to start', () => {
       equipment = []
@@ -271,30 +248,12 @@ describe('<Scenario/>', () => {
       inputChange(playerOption)
       triggerRerender(equipment, playerHealth, playerOption)
       submitOption('Enter')
-      assertGameOver(
-        reason,
-        mockDispatch,
-        mockSetPlayerHealth,
-        mockSetPlayerOption,
-        mockSetUserName,
-        mockChangePage
-      )
+      assertGameOver(reason, mockChangePage)
     })
   })
 })
 
-function assertGameOver(
-  reason,
-  mockDispatch,
-  mockSetPlayerHealth,
-  mockSetPlayerOption,
-  mockSetUserName,
-  mockChangePage
-) {
-  expect(global.alert).toHaveBeenCalledWith(`Game Over!!! ${reason}`)
-  expect(mockDispatch).toHaveBeenCalledWith({ type: RESET })
-  expect(mockSetPlayerHealth).toHaveBeenCalledWith(100)
-  expect(mockSetPlayerOption).toHaveBeenCalledWith('')
-  expect(mockSetUserName).toHaveBeenCalledWith('')
+function assertGameOver(reason, mockChangePage) {
   expect(mockChangePage).toHaveBeenCalledWith('credits')
+  expect(global.alert).toHaveBeenCalledWith(`Game Over!!! ${reason}`)
 }

@@ -1,15 +1,9 @@
 import React from 'react'
-import {
-  render,
-  cleanup,
-  fireEvent,
-  waitForElement
-} from 'react-testing-library'
+import { render, fireEvent } from 'react-testing-library'
 
 import Message from './Message'
 
 // automatically unmount and cleanup DOM after the test is finished.
-afterEach(cleanup)
 
 describe('<Message/>', () => {
   let mockDisplayMessage, getByTestId
