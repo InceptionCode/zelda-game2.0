@@ -98,7 +98,7 @@ const Intro = props => {
             <br />
             2. Take Sword.
             <br />
-            Here you would enter "Knife" or "Sword" or the associated number.
+            Here you would enter "Knife" or "Sword".
           </li>
           <li>
             You are given 5 items to start off with as your equipment.
