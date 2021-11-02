@@ -1,26 +1,22 @@
-import React, { Fragment, useEffect, useLayoutEffect, useState } from 'react'
-import PropTypes from 'prop-types'
 import zeldaIcon from '../../images/zelda-icon.jpg'
 
-const Intro = props => {
-  const [divStyle, moveDiv] = useState({})
+import React, { useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
 
-  const changeDivStyle = () => {
-    moveDiv({ transform: 'translateX(0)' })
-  }
+import { SET_PLAY_STATE, SET_PLAYER_NAME, SET_DISPLAY_MESSAGE } from '../../stores/gameStore'
+
+const Intro = props => {
+  const [playerName, setPlayerNameInput] = useState('')
 
   useEffect(() => {
-    props.setPlayState('playing')
-  })
+    if (props.gameState.playState !== 'playing') {
+      props.dispatch({ type: SET_PLAY_STATE, payload: 'playing' })
+    }
+  }, [props.gameState.playState])
 
-  useLayoutEffect(() => {
-    const timer = window.setTimeout(changeDivStyle, 300)
-    return () => window.clearTimeout(timer)
-  })
-
-  const blinker = props.userName !== '' ? { animation: 'none' } : {},
+  const blinker = props.gameState.playerName !== '' ? { animation: 'none' } : {},
     enterOption =
-      props.userName !== ''
+      props.gameState.playerName !== ''
         ? {
             display: 'initial',
             animation: 'blinker ease-in-out 1s infinite'
@@ -29,17 +25,24 @@ const Intro = props => {
 
   const _enterGame = e => {
     if (e.key === 'Enter') {
-      if (props.userName !== '') {
-        props.changePage('scenario1')
-      } else {
-        props.displayMessage(true, 'Please add username.')
+      if (!playerName) {
+        props.dispatch({ 
+          type: SET_DISPLAY_MESSAGE, 
+          payload: { displayMessage: true, message: 'Please add username.' }
+        })
       }
+
+      props.dispatch({ type: SET_PLAYER_NAME, payload: { playerName, currentPage: 'scenario1' } })
     }
   }
 
+  const _handlePlayerNameInput = e => {
+    setPlayerNameInput(e.target.value)
+  }
+
   return (
-    <Fragment>
-      <div className="intro-section" style={divStyle}>
+    <>
+      <div className="intro-section">
         <img src={zeldaIcon} className="intro-icon" alt="" />
         <h2> The lost story of the great Hero....</h2>
         <br />
@@ -124,27 +127,24 @@ const Intro = props => {
           </li>
         </ul>
         <input
-          onChange={e => props.setUserName(e.target.value)}
           type="text"
           placeholder="Enter your name"
-          value={props.userName}
+          value={playerName}
           style={blinker}
+          onChange={_handlePlayerNameInput}
           onKeyDown={_enterGame}
         />
         <h2 className="enter-game" style={enterOption}>
           Press Enter to Begin...
         </h2>
       </div>
-    </Fragment>
+    </>
   )
 }
 
 Intro.propTypes = {
-  changePage: PropTypes.func.isRequired,
-  setUserName: PropTypes.func.isRequired,
-  setPlayState: PropTypes.func.isRequired,
-  displayMessage: PropTypes.func.isRequired,
-  userName: PropTypes.string
+  gameState: PropTypes.object.isRequired,
+  dispatch: PropTypes.func.isRequired,
 }
 
 export default Intro

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import zeldaImage from '../../images/zelda-image.png'
+import { SET_CURRENT_PAGE } from '../../stores/gameStore'
 
 const Start = props => {
   const [introVidTime, setIntroVidTime] = useState(0)
@@ -10,24 +11,23 @@ const Start = props => {
   }
 
   useEffect(() => {
-    if (introVidTime === 10) return
     const timer = window.setTimeout(increaseIntroVidTime, 1000)
     return () => clearTimeout(timer)
   }, [introVidTime])
 
   // Do not like this need a better way to test instead of using a prop.
   const displayOptionsMenu =
-    introVidTime === 10 || props.test ? (
+    introVidTime >= 10 || props.test ? (
       <div className="start-menu">
         <button
           className="start-button"
-          onClick={() => props.changePage('intro')}
+          onClick={() => props.dispatch({ type: SET_CURRENT_PAGE, payload: 'intro' })}
         >
           Start
         </button>
         <button
           className="credits-button"
-          onClick={() => props.changePage('credits')}
+          onClick={() => props.dispatch({ type: SET_CURRENT_PAGE, payload: 'credits' })}
         >
           Roll Credits
         </button>
@@ -48,7 +48,8 @@ const Start = props => {
         className="zelda-history"
         title="zelda-history-video"
         src="https://www.youtube.com/embed/9C064fZFKrQ?&autoplay=1&mute=1&"
-        frameBorder="0"
+        frameBorder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
       />
     </div>
@@ -56,7 +57,7 @@ const Start = props => {
 }
 
 Start.propTypes = {
-  changePage: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired,
   test: PropTypes.bool
 }
 

@@ -8,3 +8,19 @@ body
   background: $main-bg
   color: $text-color
   font-family: Raleway, Helvetica, sans-serif
+
+button
+  background: none
+  box-shadow: 2px 4px 5px fade-out($text-color, .7)
+  font-size: 16px
+  margin: 5px
+  padding: 10px
+  transition: all ease-in-out .4s
+  width: 180px
+
+  &:hover
+    animation: buttonAnimate .4s ease-in-out forwards
+    cursor: pointer
+
+  &:focus
+    outline: none

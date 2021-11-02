@@ -2,8 +2,9 @@ import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 
 const Credits = props => {
+  // NOTE: aAdd restart button at the end of Credits
   useEffect(() => {
-    const { playState, playerHealth, equipment } = props
+    const { playState, playerHealth, equipment } = props.gameState
     if (playState === 'playing' && playerHealth !== 0 && equipment.length > 0) {
       alert('You Won!!')
     }
@@ -20,7 +21,7 @@ const Credits = props => {
       <h1> Videos </h1>
       <h2>
         <a href="https://www.youtube.com/channel/UCnHYnCvCW_uwPJfVVYpt7QQ">
-          ClickSelect
+          ClickSelekt
         </a>
       </h2>
       <h1> Contributors / Motivators </h1>
@@ -36,14 +37,22 @@ const Credits = props => {
       <p> Very motivating and understanding. </p>
       <h2 className="contributors"> Richard Harris </h2>
       <p> By having me remember that good things come to those who wait. </p>
+      <br />
+      <div>
+        <button className="start-button" 
+          onClick={() => props.resetGame()}>
+            Restart?
+        </button>
+      </div>
+      
     </div>
   )
 }
 
 Credits.propTypes = {
-  playState: PropTypes.string.isRequired,
-  equipment: PropTypes.array.isRequired,
-  playerHealth: PropTypes.number.isRequired
+  dispatch: PropTypes.func.isRequired,
+  resetGame: PropTypes.func.isRequired,
+  gameState: PropTypes.object.isRequired
 }
 
 export default Credits

@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, fireEvent } from 'react-testing-library'
 import { REMOVE_EQUIPMENT } from '../../../stores/equipmentStore'
-import Scenario from '../Scenario2'
+import Scenario from '../../Scenarios/Scenario2'
 
 // automatically unmount and cleanup DOM after the test is finished.
 

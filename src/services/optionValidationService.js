@@ -1,33 +1,39 @@
 export default class OptionValidationService {
-  constructor(correctAnswers, { playerHealth, equipment }) {
-    this.correctAnswers = correctAnswers
-    this.health = playerHealth
-    this.equipment = equipment
+  #correctAnswers
+  constructor() {
+      this.#correctAnswers = {
+      'scenario1': ['rope','hook'],
+      'scenario2': ['sword','pen'],
+      'scenario3': ['hook','flashlight'],
+      'scenario4': ['run','hook']
+    }
   }
 
-  CheckPlayerHealth() {
-    return this.health === 0 ? [false, 'no health'] : [true, 'has health']
+
+  CheckPlayerHealth(health) {
+    return health === 0 ? [false, 'no health'] : [true, 'has health']
   }
 
-  CheckPlayerEquipment() {
-    return this.equipment.length === 0
+  CheckPlayerEquipment(equipment) {
+    return equipment.length === 0
       ? [false, 'no equipment']
       : [true, 'has equipment']
   }
 
-  CheckPlayerAnswer(answer) {
-    const [hasHealth, healthReason] = this.CheckPlayerHealth()
+  CheckPlayerAnswer(state, answer) {
+    const scenarioAnswers = this.#correctAnswers[state.currentPage]
+    const [hasHealth, healthReason] = this.CheckPlayerHealth(state.playerHealth)
     if (!hasHealth) return [false, healthReason]
 
-    const [hasEquipment, equipmentReason] = this.CheckPlayerEquipment()
+    const [hasEquipment, equipmentReason] = this.CheckPlayerEquipment(state.equipment)
     if (!hasEquipment) return [false, equipmentReason]
 
     if (answer === '') return [false, '']
 
-    const isOption = this.equipment.indexOf(answer)
+    const isOption = state.equipment.indexOf(answer)
     if (isOption === -1) return [false, 'not an option']
 
-    const hasCorrectAnswer = this.correctAnswers.indexOf(answer)
+    const hasCorrectAnswer = scenarioAnswers.indexOf(answer)
     if (hasCorrectAnswer === -1) {
       return [false, 'wrong answer']
     } else {

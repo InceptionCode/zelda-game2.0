@@ -1,39 +1,44 @@
-import React, { useState, useReducer } from 'react'
-import Game from './Game.js'
+import React, { useReducer } from 'react'
 
-import EquipmentReducer from '../stores/equipmentStore'
+import GameStateReducer, { initState, RESET_GAME} from '../stores/gameStore'
+import GameRouteStrategy from '../services/GameRouteStrategy'
+import Message from '../components/Message'
 
-export const StoreContext = React.createContext()
 
-export const StoreContextProvider = () => {
-  const [playState, setPlayState] = useState('not playing')
-  const [playerOption, setPlayerOption] = useState('')
-  const [userName, setUserName] = useState('')
-  const [playerHealth, setPlayerHealth] = useState(100)
-  const [equipment, dispatch] = useReducer(EquipmentReducer, [
+const initialState = {
+  equipment:  [
     'sword',
     'rope',
     'flashlight',
     'pen',
-    'hook'
-  ])
+    'hook',
+    'run'
+  ],
+  playState: 'not playing',
+  playerName: '',
+  playerHealth: 100,
+  currentPage: 'start',
+  message: '',
+  displayMessage: false
+}
 
-  const storeValues = {
-    playState,
-    setPlayState,
-    playerOption,
-    setPlayerOption,
-    userName,
-    setUserName,
-    playerHealth,
-    setPlayerHealth,
-    dispatch,
-    equipment
+const Game = () => {
+  const [gameState, dispatch] = useReducer(GameStateReducer, initialState, initState)
+
+  const resetGame = () => {
+    dispatch({ type: RESET_GAME, payload: initialState })
   }
 
+  const pageProps = { gameState, dispatch, resetGame }
+
   return (
-    <StoreContext.Provider value={storeValues}>
-      <Game />
-    </StoreContext.Provider>
+    <>
+      {gameState.displayMessage && (
+        <Message { ...pageProps } />
+      )}
+      {GameRouteStrategy.returnPage(pageProps)}
+    </>
   )
 }
+
+export default Game

@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 
+import { SET_DISPLAY_MESSAGE } from '../../stores/gameStore'
+
 const Message = props => {
+
   useEffect(() => {
     document.body.style.overflow = 'hidden'
     return () => {
@@ -11,7 +14,7 @@ const Message = props => {
 
   const closeMessage = e => {
     if (e.key === 'Enter') {
-      props.displayMessage(false)
+      props.dispatch({ type: SET_DISPLAY_MESSAGE, payload: { displayMessage: false  } })
     }
   }
 
@@ -23,9 +26,11 @@ const Message = props => {
     >
       <div className="alert-message">
         <h1> Game Alert </h1>
-        <p>{props.message}</p>
+        <p>{props.gameState.message}</p>
         <input
           placeholder="Press Enter to Close Message"
+          value=''
+          readOnly
           autoFocus
           onKeyDown={closeMessage}
         />
