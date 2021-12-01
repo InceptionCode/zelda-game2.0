@@ -39,7 +39,7 @@ const Credits = props => {
       <p> By having me remember that good things come to those who wait. </p>
       <br />
       <div>
-        <button className="start-button" 
+        <button data-testid = "restart-btn" className="start-button" 
           onClick={() => props.resetGame()}>
             Restart?
         </button>
@@ -50,7 +50,6 @@ const Credits = props => {
 }
 
 Credits.propTypes = {
-  dispatch: PropTypes.func.isRequired,
   resetGame: PropTypes.func.isRequired,
   gameState: PropTypes.object.isRequired
 }

@@ -4,6 +4,10 @@ import Start from '../components/StartPage'
 import Intro from '../components/IntroPage'
 import Credits from '../components/CreditsPage'
 import ScenarioPage from "../components/ScenarioPage"
+import Scenario1 from "../components/ScenarioPage/scenarioContent/Scenario1"
+import Scenario2 from "../components/ScenarioPage/scenarioContent/Scenario2"
+import Scenario3 from "../components/ScenarioPage/scenarioContent/Scenario3"
+import Scenario4 from "../components/ScenarioPage/scenarioContent/Scenario4"
 
 export default class GameRouteStrategy {
   // Internal Private field
@@ -46,107 +50,4 @@ export default class GameRouteStrategy {
   
   function RenderNotSupported() {
     return <div id="not-supported"> Page Not Supported </div>
-  }
-
-  function Scenario1(props) {
-    return (
-      <>
-        <h1> Hello { props.gameState.playerName } </h1>
-        <p>
-          Link has made it inside the castle that rests barely above a huge body
-          of water.
-          <br />
-          It seems that the first room is flooded and water is rising quickly.
-          <br />
-          What option will you choose { props.gameState.playerName }?
-          <br />
-          1. Tie a knot on your "rope" and use it to swing from the ceiling to the
-          other room?
-          <br />
-          2. Use the "flashlight" in order to search for an extra object or path
-          you can exploit?
-          <br />
-          3. Throw a "pen" at the ceiling?
-          <br />
-          4. Use the "sword" to find another weak spot in the wall that you can
-          break?
-          <br />
-          5. Throw your "hook" at the ceiling and use it swing to the other room?
-          <br />
-          6. Just "run" away?
-        </p>
-      </>
-    )
-  }
-
-  function Scenario2(props) {
-    return (
-      <>
-         <p>
-          Link finds 5 huge guards in the next room.
-          <br />
-          What option will you choose { props.gameState.playerName }?
-          <br />
-          1. Use your "sword" to cut the guards down?
-          <br />
-          2. Use the "flashlight" in order to blind the guards?
-          <br />
-          3. Throw a "pen" for a distraction?
-          <br />
-          4. Use the "rope" to grab one guard at a time?
-          <br />
-          5. Throw "hook" at guards?
-          <br />
-          6. Just "run" away?
-        </p>
-      </>
-    )
-  }
-
-  function Scenario3(props) {
-    return (
-      <>
-        <p>
-          Link knows there is a trained assassin up ahead in a dark room.
-          <br />
-          What option will you choose {props.gameState.playerName}?
-          <br />
-          1. Run forward with your "sword" up and ready?
-          <br />
-          2. Use your "hook" in order to break a window?
-          <br />
-          3. Throw your "pen" and hope for the best?
-          <br />
-          4. Scan the room with the "flashlight"?
-          <br />
-          5. Bait assassin with your "rope"?
-          <br />
-          6. Just "run" away?
-        </p>
-      </>
-    )
-  }
-
-  function Scenario4(props) {
-    return (
-      <>
-        <p>
-          Link finds Zelda and an army running his way.
-          <br />
-          What option will you choose {props.gameState.playerName}?
-          <br />
-          1. Kiss Zelda, throw her your "sword" and run away?
-          <br />
-          2. Throw "hook" into a window and jump out with Zelda?
-          <br />
-          3. Take your "pen" and write 'I give up', on Zelda?
-          <br />
-          4. Wave your "flashlight" and hope help comes?
-          <br />
-          5. Tie the "rope" onto Zelda and run away?
-          <br />
-          6. Just "run" away?
-        </p>
-      </>
-    )
   }

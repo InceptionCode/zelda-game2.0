@@ -1,16 +1,13 @@
 import React from 'react'
-import { render, fireEvent } from 'react-testing-library'
+import { render, fireEvent, waitFor } from '@testing-library/react'
 
-import Start from './Start'
-
-// automatically unmount and cleanup DOM after the test is finished.
+import Start from './'
 
 describe('<Start/>', () => {
-  let mockChangePage, mockDisplayMessage, getByTestId
+  let mockDispatch, getByTestId
   beforeEach(() => {
-    mockChangePage = jest.fn()
-    mockDisplayMessage = jest.fn()
-    getByTestId = render(<Start changePage={mockChangePage} />).getByTestId
+    mockDispatch = jest.fn()
+    getByTestId = render(<Start dispatch={mockDispatch} />).getByTestId
   })
 
   it('should render with no problem.', () => {
@@ -23,38 +20,44 @@ describe('<Start/>', () => {
     )
   })
 
-  // Cannot figure out how to test after 10 seconds
   it('should render two buttons, one starts the game the other roll credits when state.introVidTime === 10.', async () => {
     const { getByText } = render(
-      <Start changePage={mockChangePage} test={true} />
+      <Start dispatch={mockDispatch} test={true} />
     )
-    let startButton, creditsButton
-    startButton = getByText('Start')
-    creditsButton = getByText('Roll Credits')
+
+    const startButton = await waitFor(() => getByText('Start'))
+    const creditsButton = await waitFor(() => getByText('Roll Credits'))
+
     expect(startButton).toBeTruthy()
     expect(creditsButton).toBeTruthy()
   })
 
   describe('Button functionality', () => {
-    let getByText
+    let getByText, dispatchPayload
     beforeEach(() => {
       const component = render(
-        <Start changePage={mockChangePage} test={true} />
+        <Start dispatch={mockDispatch} test={true} />
       )
       getByTestId = component.getByTestId
       getByText = component.getByText
     })
 
-    it('should start game by calling changePage("intro")', () => {
-      let startButton = getByText('Start')
+    it('should start game by calling dispatch("intro")', () => {
+      const startButton = getByText('Start')
+      dispatchPayload = { payload: "intro", type: "SET_CURRENT_PAGE" }
+
       fireEvent.click(startButton)
-      expect(mockChangePage).toHaveBeenCalledWith('intro')
+
+      expect(mockDispatch).toHaveBeenCalledWith(dispatchPayload)
     })
 
-    it('should show credits for game by calling changePage("credits")', () => {
+    it('should show credits for game by calling dispatch("credits")', () => {
+      dispatchPayload = { payload: "credits", type: "SET_CURRENT_PAGE" }
       let startButton = getByText('Roll Credits')
+
       fireEvent.click(startButton)
-      expect(mockChangePage).toHaveBeenCalledWith('credits')
+
+      expect(mockDispatch).toHaveBeenCalledWith(dispatchPayload)
     })
   })
 })

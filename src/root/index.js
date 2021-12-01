@@ -24,7 +24,6 @@ const initialState = {
 
 const Game = () => {
   const [gameState, dispatch] = useReducer(GameStateReducer, initialState, initState)
-
   const resetGame = () => {
     dispatch({ type: RESET_GAME, payload: initialState })
   }

@@ -1,17 +1,23 @@
 import React from 'react'
-import { render, fireEvent } from 'react-testing-library'
+import { render, fireEvent } from '@testing-library/react'
 
-import Message from './Message'
+import Message from './'
 
 // automatically unmount and cleanup DOM after the test is finished.
 
 describe('<Message/>', () => {
-  let mockDisplayMessage, getByTestId
+  let mockDispatch, getByTestId, getByPlaceholderText, component, action
+
   beforeEach(() => {
-    mockDisplayMessage = jest.fn()
-    getByTestId = render(
-      <Message displayMessage={mockDisplayMessage} message="Test message" />
-    ).getByTestId
+    mockDispatch = jest.fn()
+    component = render(
+      <Message dispatch={ mockDispatch } gameState={ { message: "Test message" } } />
+    )
+
+    getByPlaceholderText = component.getByPlaceholderText
+    getByTestId = component.getByTestId
+
+    action = { type: "SET_DISPLAY_MESSAGE",  payload: { displayMessage: false } }
   })
 
   it('should render (message) with no problem.', () => {
@@ -21,29 +27,22 @@ describe('<Message/>', () => {
   })
 
   describe('closing the message', () => {
-    let getByPlaceholderText, component
-    beforeEach(() => {
-      component = render(
-        <Message displayMessage={mockDisplayMessage} message="Test message" />
-      )
-      getByPlaceholderText = component.getByPlaceholderText
-      getByTestId = component.getByTestId
-    })
-
     it('when user presses enter on the input it should close the message.', () => {
       const messageComp = getByTestId('message-component')
       const input = getByPlaceholderText('Press Enter to Close Message')
+
       expect(messageComp).toBeTruthy()
       fireEvent.keyDown(input, { key: 'Enter' })
-      expect(mockDisplayMessage).toHaveBeenCalledWith(false)
+      expect(mockDispatch).toHaveBeenCalledWith(action)
     })
 
     it('should not close the message if key is not "enter"', () => {
       const messageComp = getByTestId('message-component')
       const input = getByPlaceholderText('Press Enter to Close Message')
+
       expect(messageComp).toBeTruthy()
       fireEvent.keyDown(input, { key: 'Backspace' })
-      expect(mockDisplayMessage).not.toHaveBeenCalledWith(false)
+      expect(mockDispatch).not.toHaveBeenCalledWith(action)
     })
   })
 })

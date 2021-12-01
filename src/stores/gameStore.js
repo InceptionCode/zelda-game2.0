@@ -1,4 +1,4 @@
-import OptionValidationService from '../services/OptionValidationService'
+import OptionValidationService, { WRONG_ANSWER, NO_EQUIPMENT, NO_HEALTH, NOT_AN_OPTION } from '../services/OptionValidationService'
 
 export const SET_PLAYER_NAME = 'SET_PLAYER_NAME'
 export const SET_PLAY_STATE = 'SET_PLAY_STATE'
@@ -19,7 +19,7 @@ export default function GameStateReducer(state, action) {
     case SET_PLAY_STATE:
       return { ...state, playState: action.payload }
     case SET_PLAYER_NAME:
-      return { ...state, playerName: action.payload.playerName, currentPage: action.payload.currentPage }
+      return { ...state, playerName: action.payload.playerName, currentPage: action.payload.currentPage || state.currentPage }
     case SET_DISPLAY_MESSAGE:
       return { ...state, displayMessage: action.payload.displayMessage, message: action.payload.message || '' }
     case SET_CURRENT_PAGE:
@@ -71,12 +71,12 @@ export default function GameStateReducer(state, action) {
   
   function handleInvalidCases(state, { playerOption, reason }) {
     switch (reason) {
-      case 'wrong answer':
+      case WRONG_ANSWER:
         return handleWrongAnswer(state, playerOption)
-      case 'not an option':
+      case NOT_AN_OPTION:
         return handleInvalidOption(state, reason)
-      case 'no health':
-      case 'no equipment':
+      case NO_HEALTH:
+      case NO_EQUIPMENT:
         return handleEndGame(state, reason)
       default:
         return { ...state, displayMessage: true, message: 'Please choose an option' }
@@ -86,7 +86,6 @@ export default function GameStateReducer(state, action) {
   function returnAnswerState(state, payload) {
     // Pass state & correct answers here...
     const [isValid, reason] = optionValidationService.CheckPlayerAnswer(state, payload.playerOption.toLowerCase())
-
     if (!isValid) {
       payload.reason = reason
       return handleInvalidCases(state, payload)

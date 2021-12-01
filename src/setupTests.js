@@ -1,4 +1,8 @@
-import 'react-testing-library/cleanup-after-each'
-import 'jest-dom/extend-expect'
+import '@testing-library/jest-dom'
+import { cleanup } from '@testing-library/react'
 
 global.alert = jest.fn()
+
+afterEach(() => {
+  cleanup()
+})

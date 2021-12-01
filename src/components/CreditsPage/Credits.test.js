@@ -1,19 +1,22 @@
 import React from 'react'
-import { render } from 'react-testing-library'
+import { render, fireEvent } from '@testing-library/react'
 
-import Credits from './Credits'
+import Credits from './'
 
 describe('<Credits/>', () => {
-  let component, playState, playerHealth, equipment, getByTestId
+  let component, getByTestId, mockResetGame, gameState
   beforeEach(() => {
-    playState = 'not playing'
-    playerHealth = 100
-    equipment = ['sword']
+    gameState = {
+      playState: 'not playing',
+      playerHealth: 100,
+      equipment: ['sword']
+    }
+    mockResetGame = jest.fn()
+  
     component = render(
       <Credits
-        playState={playState}
-        playerHealth={playerHealth}
-        equipment={equipment}
+        gameState={gameState}
+        resetGame={mockResetGame}
       />
     )
     getByTestId = component.getByTestId
@@ -28,29 +31,46 @@ describe('<Credits/>', () => {
       expect(global.alert).not.toHaveBeenCalled()
     })
 
+
     it('should not show "you won" if health is 0 or no equipment.', () => {
-      playState = 'playing'
-      playerHealth = 0
+      gameState.playState = 'playing'
+      gameState.playerHealth = 0
+
       component.rerender(
         <Credits
-          playState={playState}
-          playerHealth={playerHealth}
-          equipment={equipment}
+          gameState={gameState}
+          resetGame={mockResetGame}
         />
       )
+
+      expect(global.alert).not.toHaveBeenCalledWith('You Won!!')
+
+      gameState.playerHealth = 100
+      gameState.equipment = []
+
+      component.rerender(
+        <Credits
+          gameState={gameState}
+          resetGame={mockResetGame}
+        />
+      )
+
       expect(global.alert).not.toHaveBeenCalledWith('You Won!!')
     })
 
-    it('should check playState, if user did enter game an alert should show', () => {
-      playState = 'playing'
+    it('should reset game when restart button is clicked', () => {
+      gameState.playState = 'playing'
+
       component.rerender(
         <Credits
-          playState={playState}
-          playerHealth={playerHealth}
-          equipment={equipment}
+          gameState={gameState}
+          resetGame={mockResetGame}
         />
       )
-      expect(global.alert).toHaveBeenCalledWith('You Won!!')
+
+      fireEvent.click(getByTestId('restart-btn'))
+
+      expect(mockResetGame).toHaveBeenCalled()
     })
   })
 })

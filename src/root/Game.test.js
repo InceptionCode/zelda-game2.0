@@ -1,23 +1,24 @@
 import React from 'react'
-import { render } from 'react-testing-library'
+import { render } from '@testing-library/react'
 
 import Game from './'
-
 // automatically unmount and cleanup DOM after the test is finished.
 
 describe('<Game/>', () => {
+  let gameFragment 
+  beforeEach(() => {
+    gameFragment = render(<Game />).asFragment
+  })
+
   it('should render with no problem.', () => {
-    const { asFragment } = render(<Game />)
-    expect(asFragment()).toBeTruthy()
+    expect(gameFragment()).toBeTruthy()
   })
 
   it('should render start page initially.', () => {
-    const { asFragment } = render(<Game />)
-    expect(asFragment().querySelector('#start-menu')).toBeTruthy()
+    expect(gameFragment().querySelector('#start-menu')).toBeTruthy()
   })
 
   it('should not render message initially', () => {
-    const { asFragment } = render(<Game />)
-    expect(asFragment().querySelector('.message-overlay')).toBeFalsy()
+    expect(gameFragment().querySelector('.message-overlay')).toBeFalsy()
   })
 })

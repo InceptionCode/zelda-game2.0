@@ -1,42 +1,12 @@
-import OptionValidationService from './optionValidationService'
-
-const assertCheckPlayerAnswer = function(
-  expect,
-  service,
-  answer,
-  correctAnswers,
-  expectedReturn
-) {
-  expect(service.correctAnswers).toEqual(expect.arrayContaining(correctAnswers))
-  expect(service.CheckPlayerAnswer(answer)).toEqual(expectedReturn)
-}
-
-const assertCheckPlayerHealth = function(
-  expect,
-  service,
-  correctAnswers,
-  expectedReturn
-) {
-  expect(service.correctAnswers).toEqual(expect.arrayContaining(correctAnswers))
-  expect(service.CheckPlayerHealth()).toEqual(expectedReturn)
-}
-
-const assertCheckPlayerEquipment = function(
-  expect,
-  service,
-  correctAnswers,
-  expectedReturn
-) {
-  expect(service.correctAnswers).toEqual(expect.arrayContaining(correctAnswers))
-  expect(service.CheckPlayerEquipment()).toEqual(expectedReturn)
-}
+import OptionValidationService, { NOT_AN_OPTION, NO_EQUIPMENT, NO_HEALTH, RIGHT_ANSWER, WRONG_ANSWER } from './optionValidationService'
 
 describe('OptionValidationService', () => {
   let optionValidationService, correctAnswers, state
   beforeEach(() => {
     state = {
-      equipment: ['rope', 'hook', 'sword'],
-      health: 100
+      equipment: ['rope', 'hook', 'sword', 'flashlight'],
+      playerHealth: 100,
+      currentPage: 'scenario1'
     }
     correctAnswers = ['rope', 'hook']
     optionValidationService = new OptionValidationService(correctAnswers, state)
@@ -44,34 +14,31 @@ describe('OptionValidationService', () => {
 
   describe('when CheckPlayerAnswer is called', () => {
     it('should return "false" and wrong answer (expected reason for failure)', () => {
-      const expectedReturn = [false, 'wrong answer']
+      const expectedReturn = [false, WRONG_ANSWER]
       assertCheckPlayerAnswer(
-        expect,
+        state,
         optionValidationService,
         'sword',
-        correctAnswers,
         expectedReturn
       )
     })
 
     it('should return "true" and right answer (expected reason for success)', () => {
-      const expectedReturn = [true, 'right answer']
+      const expectedReturn = [true, RIGHT_ANSWER]
       assertCheckPlayerAnswer(
-        expect,
+        state,
         optionValidationService,
         'rope',
-        correctAnswers,
         expectedReturn
       )
     })
 
     it('should return "false" and not an option (expected reason for failure)', () => {
-      const expectedReturn = [false, 'not an option']
+      const expectedReturn = [false, NOT_AN_OPTION]
       assertCheckPlayerAnswer(
-        expect,
+        state,
         optionValidationService,
         'hamburger',
-        correctAnswers,
         expectedReturn
       )
     })
@@ -79,12 +46,10 @@ describe('OptionValidationService', () => {
 
   describe('when CheckPlayerHealth is called', () => {
     it('should return "false" and no health (expected reason for failure)', () => {
-      const expectedReturn = [false, 'no health']
-      optionValidationService.health = 0
+      const expectedReturn = [false, NO_HEALTH]
       assertCheckPlayerHealth(
-        expect,
+        0,
         optionValidationService,
-        correctAnswers,
         expectedReturn
       )
     })
@@ -92,9 +57,8 @@ describe('OptionValidationService', () => {
     it('should return "true" and has health (expected reason for success)', () => {
       const expectedReturn = [true, 'has health']
       assertCheckPlayerHealth(
-        expect,
+        100,
         optionValidationService,
-        correctAnswers,
         expectedReturn
       )
     })
@@ -102,12 +66,10 @@ describe('OptionValidationService', () => {
 
   describe('when CheckPlayerEquipment is called.', () => {
     it('should return "false" no equipment (expected reason for failure)', () => {
-      const expectedReturn = [false, 'no equipment']
-      optionValidationService.equipment = []
+      const expectedReturn = [false, NO_EQUIPMENT]
       assertCheckPlayerEquipment(
-        expect,
+        [],
         optionValidationService,
-        correctAnswers,
         expectedReturn
       )
     })
@@ -115,11 +77,23 @@ describe('OptionValidationService', () => {
     it('should return "true" and has equipment (expected reason for success)', () => {
       const expectedReturn = [true, 'has equipment']
       assertCheckPlayerEquipment(
-        expect,
+        ['equipment'],
         optionValidationService,
-        correctAnswers,
         expectedReturn
       )
     })
   })
 })
+
+
+function assertCheckPlayerAnswer(state, service, answer, expectedReturn) {
+  expect(service.CheckPlayerAnswer(state, answer)).toEqual(expectedReturn)
+}
+
+function assertCheckPlayerHealth(health, service, expectedReturn) {
+  expect(service.CheckPlayerHealth(health)).toEqual(expectedReturn)
+}
+
+function assertCheckPlayerEquipment(equipment, service, expectedReturn) {
+  expect(service.CheckPlayerEquipment(equipment)).toEqual(expectedReturn)
+}
